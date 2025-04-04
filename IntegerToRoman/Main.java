@@ -88,8 +88,8 @@ class IntegerToRoman {
   }
 }
 
-class RomanNumberToHighException extends Exception {
-  public RomanNumberToHighException(String message) {
+class RomanNumberTooHighException extends Exception {
+  public RomanNumberTooHighException(String message) {
     super(message);
   }
 }
@@ -114,7 +114,7 @@ public class Main {
         int result = userNumber * temp;
 
         if (result > 3999) {
-          throw new RomanNumberToHighException("\nEnter a number below 4000!\n");
+          throw new RomanNumberTooHighException("\nEnter a number below 4000!\n");
         } else if (result < 0) {
           throw new NegativeRomanNumberException("\nEnter a positive number!\n");
         } else {
@@ -123,7 +123,7 @@ public class Main {
         }
       }catch (NumberFormatException e) {
         System.out.println("\nEnter a valid number!\n");
-      } catch (RomanNumberToHighException f) {
+      } catch (RomanNumberTooHighException f) {
         System.out.println(f.getMessage());
       } catch (NegativeRomanNumberException g) {
         System.out.println(g.getMessage());
