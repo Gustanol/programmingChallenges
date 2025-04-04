@@ -6,9 +6,13 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 class IntegerToRoman {
   private Integer number;
   private Map<Integer, String> romanNumbers = new LinkedHashMap<>();
+  private Map<String, Integer> valuesKeysRomanNumbers = new LinkedHashMap<>();
   private List<String> currentRomanNumber = new LinkedList<>();
   private Map<Integer, String> inverseRomanNumbers = new TreeMap<>(Comparator.reverseOrder());
   
@@ -25,21 +29,11 @@ class IntegerToRoman {
     
     inverseRomanNumbers.putAll(this.romanNumbers);
     
-    calculateRomanNumbers();
-  }
-  
-  public static boolean powerOfTen(Integer num) {
-    while (num > 1 && num % 10 == 0) {
-      num /= 10;
+    for (Map.Entry<Integer, String> i : this.romanNumbers.entrySet()) {
+      this.valuesKeysRomanNumbers.put(i.getValue(), i.getKey());
     }
-    if (num == 1) return true;
-    return false;
-  }
-  
-  public static boolean fiveTimesPowerOfTen(Integer num) {
-    if (num % 5 != 0) return false;
-    num /= 5;
-    return powerOfTen(num);
+    
+    calculateRomanNumbers();
   }
   
   public void calculateRomanNumbers() {
@@ -47,91 +41,96 @@ class IntegerToRoman {
     var currentNumber = this.number;
     while (currentNumber > 0) {
       currentNumber = persistentValue;
-      System.out.println("aq " + currentNumber);
+      
       if (romanNumbers.containsKey(currentNumber)) {
         currentRomanNumber.add(romanNumbers.get(currentNumber));
         return;
-      }
-      
-      mainLoop:
-      for (Map.Entry<Integer, String> i : this.romanNumbers.entrySet()) {
-        if (currentNumber < i.getKey()) {
-          System.out.println("i " + i.getKey());
-          if (powerOfTen(i.getKey()) && i.getKey() % currentNumber <= i.getKey() * 0.1) {
-            var oldCurrentNumber = currentNumber; // 95
-            var remainingNumber = oldCurrentNumber;
-            if (currentNumber % 100 == 0 || currentNumber % 10 == 0) currentNumber = 0;
-            else if (currentNumber >= 10 && currentNumber < 100) currentNumber = (currentNumber / 10) * 10;
-            else if (currentNumber >= 100) currentNumber = (currentNumber / 100) * 100;
-            var varDividedByTen = i.getKey() * 0.1;
-            for (Integer j : this.romanNumbers.keySet()) {
-              if (j == varDividedByTen) {
-                currentRomanNumber.add(this.romanNumbers.get(j));
-                break;
-              }
-            }
-            currentRomanNumber.add(i.getValue());
-            
-            remainingNumber -= currentNumber;
-            if (currentNumber != 0) currentNumber = remainingNumber;
-          } else if (fiveTimesPowerOfTen(i.getKey()) && i.getKey() % currentNumber <= i.getKey() * 0.2) {
-            var oldCurrentNumber = currentNumber;
-            var remainingNumber = oldCurrentNumber;
-            if (currentNumber % 100 == 0 || currentNumber % 10 == 0) currentNumber = 0;
-            else if (currentNumber >= 10 && currentNumber < 100) currentNumber = (currentNumber / 10) * 10;
-            else if (currentNumber >= 100) currentNumber = (currentNumber / 100) * 100;
-            var varDividedByFive = i.getKey() * 0.2;
-            for (Integer j : this.romanNumbers.keySet()) {
-              if (j == varDividedByFive) {
-                currentRomanNumber.add(this.romanNumbers.get(j));
-                break;
-              }
-            }
-            currentRomanNumber.add(i.getValue());
-            
-            remainingNumber -= currentNumber;
-            if (currentNumber != 0) currentNumber = remainingNumber;
+      } else {
+        currentNumber = persistentValue;
+        var oldCurrentNumber = currentNumber;
+        var remainingNumber = oldCurrentNumber;
+        
+        outerLoop:
+        for (Map.Entry<Integer, String> j : this.inverseRomanNumbers.entrySet()) {
+          if (currentNumber >= j.getKey()) {
+            currentNumber = j.getKey(); // 50
+            remainingNumber -= j.getKey(); // 24
+            persistentValue = remainingNumber;
+            currentRomanNumber.add(j.getValue());
+            break outerLoop;
           }
-        } 
-        else {
-            currentNumber = persistentValue;
-            var oldCurrentNumber = currentNumber;
-            var remainingNumber = oldCurrentNumber;
-            System.out.println("old " + oldCurrentNumber);
-            System.out.println("current " + currentNumber);
-            System.out.println("remaining " + remainingNumber);
-            outerLoop:
-            for (Map.Entry<Integer, String> j : this.inverseRomanNumbers.entrySet()) {
-              if (currentNumber >= j.getKey()) {
-                currentNumber = j.getKey(); // 50
-                remainingNumber -= j.getKey(); // 24
-                persistentValue = remainingNumber;
-                currentRomanNumber.add(j.getValue());
-                break outerLoop;
-              }
-            }
-            System.out.println("remaining " + remainingNumber);
-            System.out.println("persistent " + persistentValue);
-          }
-          break mainLoop;
         }
       }
     }
-  
+  }
   
   public String getRomanNumber() {
-    return String.join("", this.currentRomanNumber);
+    String romanNumberString = String.join("", this.currentRomanNumber);
+    
+    Pattern pattern = Pattern.compile("(.)\\1{3,}");
+    Matcher matcher = pattern.matcher(romanNumberString);
+    
+    int index = 0;
+    while (matcher.find()) {
+      Integer currentCharValue = this.valuesKeysRomanNumbers.get(String.valueOf(matcher.group(1).charAt(0)).toUpperCase());
+      Integer newCharValue = currentCharValue * 5;
+      Integer newCharValue1 = currentCharValue * 10;
+      
+      index = romanNumberString.indexOf(String.valueOf(matcher.group(1).charAt(0)));
+      
+      if (index != 0 && String.valueOf(romanNumberString.charAt(index - 1)).equals(this.romanNumbers.get(newCharValue))) {
+        romanNumberString = romanNumberString.replace(this.romanNumbers.get(newCharValue) + matcher.group(), this.romanNumbers.get(currentCharValue) + this.romanNumbers.get(newCharValue1));
+      } else {
+        romanNumberString = romanNumberString.replace(matcher.group(), this.romanNumbers.get(currentCharValue) + this.romanNumbers.get(newCharValue));
+      }
+    }
+    return romanNumberString;
+  }
+}
+
+class RomanNumberToHighException extends Exception {
+  public RomanNumberToHighException(String message) {
+    super(message);
+  }
+}
+
+class NegativeRomanNumberException extends Exception {
+  public NegativeRomanNumberException(String message) {
+    super(message);
   }
 }
 
 public class Main {
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
+    Integer userNumber = 1;
     
-    System.out.println("Enter the number: ");
-    Integer userNumber = scanner.nextInt();
+    while (true) {
+      System.out.println("Enter a number: ");
+      String input = scanner.nextLine();
+      
+      try {
+        int temp = Integer.parseInt(input);
+        int result = userNumber * temp;
+
+        if (result > 3999) {
+          throw new RomanNumberToHighException("\nEnter a number below 4000!\n");
+        } else if (result < 0) {
+          throw new NegativeRomanNumberException("\nEnter a positive number!\n");
+        } else {
+          userNumber = result;
+          break;
+        }
+      }catch (NumberFormatException e) {
+        System.out.println("\nEnter a valid number!\n");
+      } catch (RomanNumberToHighException f) {
+        System.out.println(f.getMessage());
+      } catch (NegativeRomanNumberException g) {
+        System.out.println(g.getMessage());
+      }
+    }
     
     IntegerToRoman integerToRoman = new IntegerToRoman(userNumber);
-    System.out.println(integerToRoman.getRomanNumber());
+    System.out.println("The roman number is: " + integerToRoman.getRomanNumber());
   }
 }
