@@ -2,7 +2,7 @@
 
 ## I wanted to improve my Java and programming logical abilities, so I created this repository 😊
 
-## Projects/Algorithms created:
+## Projects/Algorithm:
 
 - [Bubble Sort](./bubbleSort/Main.java)
 - [String Inverter](./invertString/Main.java)
