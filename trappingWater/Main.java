@@ -47,7 +47,7 @@ class TrappingRain {
 public class Main {
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter list elements separeted by commas: ");
+    System.out.println("Enter list elements separated by commas: ");
     String stringList = scanner.nextLine();
     List<Integer> myList = new LinkedList<>();
     try {
@@ -59,6 +59,6 @@ public class Main {
         System.out.println("That's not a valid Integer list.");
       }
     TrappingRain trappingRain = new TrappingRain(myList);
-    System.out.println(trappingRain.getCounter());
+    System.out.println("The elevation map can drain " + trappingRain.getCounter() + " cubic meter(s) of water!");
   }
 }
