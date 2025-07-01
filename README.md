@@ -1,26 +1,43 @@
-# This is a repository that I can share some technical Java challenges! 📙
+# This is a repository that I can share resolutions and experiences of some LeetCode problems! 📙
 
-## I wanted to improve my Java and programming logical abilities, so I created this repository 😊
+Each problem has its own `README.md` file that contains my resolution.
 
-## Projects/Algorithm:
+You can view the code and read the `README.md` file to understand the logic behind it. 🙂
 
-- [Bubble Sort](./bubbleSort/Main.java)
-- [String Inverter](./invertString/Main.java)
-- [String Counter](./stringCount/Main.java)
+I kept my naive solutions that I have done before start to study advanced algorithms. I think is important to show the process of improving! 🚀
+
+If you have any suggestions, do not hesitate to open an issue or contact me (realy, I love suggestions)! 😉
+
+This is my [LeetCode profile](https://leetcode.com/u/gustanol)
 
 ---
 
-### To run it, firstly, clone this repo and enter the root directory:
+### To run any code, follow this step by step:
+
+- Clone the repository:
 
 ```bash
-git clone https://github.com/Gustanol/javaChallenges.git
-cd javaChallenges
+git clone https://github.com/Gustanol/CodeProblems.git
+cd CodeProblems
 ```
 
-### Enter in a specific project directory (e.g. `/bubbleSort/`)
-### Now, compile the file using `javac` command and run the class using `java` command:
+- Enter in a specific problem directory.
+
+- If you there's a Java file, execute the followings commands:
 
 ```bash
 javac Main.java
 java Main
 ```
+
+It will compile the file and execute the code.
+
+- If there's a Go file, just execute:
+
+```bash
+go run main.go
+```
+
+---
+
+That's it! 🤗
