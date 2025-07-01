@@ -25,7 +25,7 @@ class TrappingRain {
     }
   }
   
-  public List<Integer> subList(List<Integer> elevationMap) {
+  private List<Integer> subList(List<Integer> elevationMap) {
     while (elevationMap.get(0).equals(0) || elevationMap.get(elevationMap.size() - 1).equals(0)) {
       if (elevationMap.get(0).equals(0)) {
         elevationMap.remove(0);
@@ -39,6 +39,7 @@ class TrappingRain {
     }
     return elevationMap;
   }
+  
   public Integer getCounter() {
     return this.counter;
   }

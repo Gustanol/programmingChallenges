@@ -9,8 +9,6 @@ class BubbleSort {
     this.intList = intList;
     
     for (Integer i = 0; i < intList.size(); i++) {
-      
-      // `i` is optional
       for (Integer j = 0; j < intList.size() - 1 - i; j++) {
         if (intList.get(j) > intList.get(j + 1)) {
           var temp = intList.get(j);

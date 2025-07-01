@@ -15,8 +15,7 @@ class MergeSortedLists {
         sortedLists.add(j);
       }
     }
-     
-     Collections.sort(sortedLists);
+    Collections.sort(sortedLists);
   }
   
   public List<Integer> getSortedList() {

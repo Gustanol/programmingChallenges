@@ -53,8 +53,8 @@ class IntegerToRoman {
         outerLoop:
         for (Map.Entry<Integer, String> j : this.inverseRomanNumbers.entrySet()) {
           if (currentNumber >= j.getKey()) {
-            currentNumber = j.getKey(); // 50
-            remainingNumber -= j.getKey(); // 24
+            currentNumber = j.getKey();
+            remainingNumber -= j.getKey();
             persistentValue = remainingNumber;
             currentRomanNumber.add(j.getValue());
             break outerLoop;
@@ -121,7 +121,7 @@ public class Main {
           userNumber = result;
           break;
         }
-      }catch (NumberFormatException e) {
+      } catch (NumberFormatException e) {
         System.out.println("\nEnter a valid number!\n");
       } catch (RomanNumberTooHighException f) {
         System.out.println(f.getMessage());
