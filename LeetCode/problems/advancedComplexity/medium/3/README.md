@@ -27,7 +27,7 @@ Notice that the answer must be a substring, "pwke" is a subsequence and not a su
 
 ### Intuition:
 
-The idea is use a two pointer technique. For each character in the string that didn't appear in the current substring will increment the counter.
+The idea is use a two pointer technique. For each character in the string that didn't appear in the current substring, the counter will be incremented.
 
 ---
 
@@ -40,9 +40,10 @@ The idea is use a two pointer technique. For each character in the string that d
 - A main loop `for` is created to iterate for each character of the string.
 
 - The inner loop `while` is used to verify if the current character of the string (`s.charAt(right)`) is already on the list.
-  - If it is, the indexes of `left` are removed from the list, while the `left` value is incremented.
+  - If it is, the indexes of `left` are removed from the list until the current character is not in the list anymore, while the `left` value is incremented.
   - else, the current character is added to list and `maxSub` is modified:
-    - if the current value of `maxSub` is bigger than `right - left + 1` (the length of the current substring), nothing happens. Else, the value of `maxSub` is modified.
+    - if the current value of `maxSub` is bigger than `right - left + 1` (the length of the current substring), nothing happens.
+    - else, the value of `maxSub` is modified.
  
 ---
 
@@ -56,7 +57,7 @@ Input: s = "abcddev":
   
 - right 1 ->
   - chars["a", "b"]
-  - maxSub = max(1, 1 - 0 + 1) = 
+  - maxSub = max(1, 1 - 0 + 1) = 2
 
 - right 2 ->
   - chars["a", "b", "c"]
@@ -71,7 +72,7 @@ Input: s = "abcddev":
   
   - Here, "d" is already in list. Therefore, the "while loop" is called
     
-    - left 0 -> remove 0 imdex from chars
+    - left 0 -> remove 0 index from chars
       - chars["b", "c", "d", "d"]
       - left++
       
